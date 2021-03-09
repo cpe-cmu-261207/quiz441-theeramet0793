@@ -18,21 +18,37 @@ interface JWTPayload {
   password: string;
 }
 
+let users :DataBase[] =[];  
+interface DataBase{
+  username:string
+  password:string
+  firstname:string
+  lastname:string
+  balance:number
+}
+
 app.post('/login',
   (req, res) => {
 
     const { username, password } = req.body
     // Use username and password to create token.
-    if(username !== undefined && password !== undefined){
-       return res.status(200).json({
-        message: 'Login succesfully',"token": "token ที่ระบบสร้างขึ้น"
-      })
-    }else{
-      return res.status(400).json({
-        message: 'Invalid username or password',
-      })
+    const user = users.find(user => user.username === username)
+    if (!user) {
+      res.status(400)
+      res.json({ message: 'Invalid username or password' })
+      return
     }
-    
+    if (!bcrypt.compareSync(password, user.password)) {
+      res.status(400)
+      res.json({ message: 'Invalid username or password' })
+      return
+    }
+    const token = jwt.sign({username: user.username }, SECRET)
+    res.status(200)
+    res.json({ 
+      message:'Login successfully',
+      token: token 
+    })
   })
 
 app.post('/register',
@@ -49,14 +65,15 @@ app.post('/register',
     if (registered_user) {
       res.status(400).json({ massage: "Username is already in used" });
     } else {
-      const newUser = {
-        username,
-        password,
-        firstname,
-        lastname,
-        balance,
+      const Password = bcrypt.hashSync(password, 10);
+      const customer = {
+         username,
+         password: Password,
+         firstname,
+         lastname,
+         balance,
       };
-      users.push(newUser);
+      users.push(customer);
       fs.writeFileSync("./customer.json", JSON.stringify(file));
       res.status(200).json({ massage: "Register successfully" });
     }
