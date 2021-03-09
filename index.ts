@@ -49,10 +49,9 @@ app.post('/register',
     if (registered_user) {
       res.status(400).json({ massage: "Username is already in used" });
     } else {
-      const encryptPassword = bcrypt.hashSync(password, 91);
       const newUser = {
         username,
-        password: encryptPassword,
+        password,
         firstname,
         lastname,
         balance,
@@ -72,6 +71,10 @@ app.get('/balance',
     }
     catch (e) {
       //response in case of invalid token
+      res.status(401).json({
+        massage: "Invalid token",
+      });
+
     }
   })
 
@@ -82,6 +85,7 @@ app.post('/deposit',
     //Is amount <= 0 ?
     if (!validationResult(req).isEmpty())
       return res.status(400).json({ message: "Invalid data" })
+    //
   })
 
 app.post('/withdraw',
