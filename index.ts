@@ -4,6 +4,7 @@ import cors from 'cors'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import { body, query, validationResult } from 'express-validator'
+import fs from 'fs'
 
 const app = express()
 app.use(bodyParser.json())
@@ -22,16 +23,44 @@ app.post('/login',
 
     const { username, password } = req.body
     // Use username and password to create token.
-
-    return res.status(200).json({
-      message: 'Login succesfully',
-    })
+    if(username !== undefined && password !== undefined){
+       return res.status(200).json({
+        message: 'Login succesfully',"token": "token ที่ระบบสร้างขึ้น"
+      })
+    }else{
+      return res.status(400).json({
+        message: 'Invalid username or password',
+      })
+    }
+    
   })
 
 app.post('/register',
   (req, res) => {
 
     const { username, password, firstname, lastname, balance } = req.body
+    const file = JSON.parse(
+      fs.readFileSync("./customer.json", { encoding: "utf-8" })
+    );
+    const { users } = file;
+    const registered_user = users.find(
+      (user: { username: string }) => user.username === username
+    );
+    if (registered_user) {
+      res.status(400).json({ massage: "Username is already in used" });
+    } else {
+      const encryptPassword = bcrypt.hashSync(password, 91);
+      const newUser = {
+        username,
+        password: encryptPassword,
+        firstname,
+        lastname,
+        balance,
+      };
+      users.push(newUser);
+      fs.writeFileSync("./customer.json", JSON.stringify(file));
+      res.status(200).json({ massage: "Register successfully" });
+    }
   })
 
 app.get('/balance',
@@ -39,7 +68,7 @@ app.get('/balance',
     const token = req.query.token as string
     try {
       const { username } = jwt.verify(token, SECRET) as JWTPayload
-  
+      
     }
     catch (e) {
       //response in case of invalid token
