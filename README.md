@@ -12,3 +12,7 @@
 * https://dashboard.heroku.com/apps/minimal-bank
 * https://minimal-bank.herokuapp.com
 * เเง มันก็ทำไม่ได้อยู่ดีอะครับ TT
+* ===================================================================
+* เเก้ใหม่ตามอาจารย์
+* https://quiz4-minimal-bank.herokuapp.com/
+* ธีรเมธ   เมธา 620610793
