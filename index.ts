@@ -102,6 +102,13 @@ app.delete('/reset', (req, res) => {
 })
 
 app.get('/me', (req, res) => {
+  res.status(200)
+  res.json({
+      firstname: "theeramet",
+      lastname: "metha",
+      code: 620610793,
+      gpa: 3.25
+    })
   
 })
 

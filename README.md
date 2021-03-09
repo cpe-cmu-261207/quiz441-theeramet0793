@@ -11,3 +11,4 @@
 * ซึ่งโค้ดจะ copy ให้เหมือนกันทั้งสองอันครับ
 * https://dashboard.heroku.com/apps/minimal-bank
 * https://minimal-bank.herokuapp.com
+* เเง มันก็ทำไม่ได้อยู่ดีอะครับ TT
