@@ -10,4 +10,4 @@
 * จากต้นฉบับ ChayaninSuatap/261207-practical-exam-4-template มาเเทน เเล้วจะ deploy อันนั้น
 * ซึ่งโค้ดจะ copy ให้เหมือนกันทั้งสองอันครับ
 * https://dashboard.heroku.com/apps/minimal-bank
-* https://minimal-bank.herokuapp.com/person
+* https://minimal-bank.herokuapp.com
